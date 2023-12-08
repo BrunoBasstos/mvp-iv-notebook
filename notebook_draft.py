@@ -1,6 +1,7 @@
 # Configuração para não exibir os warnings
 import warnings
 
+import joblib
 from sklearn.metrics import make_scorer, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 warnings.filterwarnings("ignore")
@@ -188,7 +189,7 @@ metricas = {
 }
 
 # Avaliação e Otimização dos Modelos Selecionados
-
+melhor_modelo = None
 for nome_modelo in modelos_selecionados:
     melhor_modelo, melhor_score = otimiza_modelo(nome_modelo, X_train, y_train, parametros_otimizacao, kfold)
     optimized_results.append(melhor_score)
@@ -203,10 +204,30 @@ for nome_modelo in modelos_selecionados:
 
 
 # Boxplot de comparação dos modelos otimizados
-fig = plt.figure(figsize=(25, 6))
-fig.suptitle('Comparação dos Modelos Otimizados')
-ax = fig.add_subplot(111)
+fig1 = plt.figure(figsize=(25, 6))
+fig1.suptitle('Comparação dos Modelos Otimizados')
+ax1 = fig1.add_subplot(111)
 plt.boxplot(optimized_results)
-ax.set_xticklabels(optimized_results[:4], rotation=90)
+ax1.set_xticklabels(modelos_selecionados, rotation=90)
 plt.show()
 
+
+
+
+
+
+
+
+
+
+# Substituir o placeholder do modelo na pipeline pela instância do melhor modelo
+pipeline_completa = Pipeline([
+    ('preprocessor', preprocessor),
+    ('model', melhor_modelo)
+])
+
+# Treinar a pipeline completa com os dados de treinamento
+pipeline_completa.fit(X_train, y_train)
+
+# Exportar a pipeline para um arquivo .pkl
+joblib.dump(pipeline_completa, 'modelo_final.pkl')
