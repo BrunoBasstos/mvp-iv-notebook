@@ -121,7 +121,7 @@ entrada1 = pd.DataFrame(entrada1, index=[0])
 
 # Fazer a predição
 predicao1 = modelo.predict(entrada1)
-print(f"Predição 1: {predicao1}")
+print (f"Predição 1: Passageiro {entrada1['Name'][0]} sobreviveu" if predicao1[0] == 1 else "não sobreviveu")
 
 # Teste 2
 
@@ -147,4 +147,4 @@ entrada2 = pd.DataFrame(entrada2, index=[0])
 predicao2 = modelo.predict(entrada2)
 #print(f"Predição 2: {predicao2}")
 # informar "sobreviveu" ou "não sobreviveu" em vez de 1 ou 0
-print (f"Predição 2: {predicao2[0]}", "sobreviveu" if predicao2[0] == 1 else "não sobreviveu")
+print (f"Predição 2: Passageiro {entrada2['Name'][0]} sobreviveu" if predicao2[0] == 1 else "não sobreviveu")
